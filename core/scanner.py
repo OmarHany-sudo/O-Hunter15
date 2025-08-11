@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import requests
 from modules.access_control import AccessControlScanner
@@ -10,6 +13,7 @@ from modules.authentication_failures import AuthenticationFailuresScanner
 from modules.software_data_integrity import SoftwareDataIntegrityScanner
 from modules.logging_monitoring import LoggingMonitoringScanner
 from modules.ssrf import SSRFScanner
+
 
 class Scanner:
     def __init__(self):
