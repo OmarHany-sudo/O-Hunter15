@@ -7,7 +7,7 @@ from flask_cors import CORS
 from scanner import Scanner
 
 # خلى static_folder يشير للـ build النهائي للـ React
-app = Flask(__name__, static_folder='../gui/ohunter-ui/dist', static_url_path='')
+app = Flask(__name__, static_folder='gui/ohunter-ui/dist', static_url_path='')
 CORS(app)
 
 @app.route('/')
