@@ -6,12 +6,17 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from scanner import Scanner
 
+# خلى static_folder يشير للـ build النهائي للـ React
 app = Flask(__name__, static_folder='../gui/ohunter-ui/dist', static_url_path='')
 CORS(app)
 
 @app.route('/')
 def serve_frontend():
-    return send_from_directory(app.static_folder, 'index.html')
+    index_path = os.path.join(app.static_folder, 'index.html')
+    if os.path.exists(index_path):
+        return send_from_directory(app.static_folder, 'index.html')
+    else:
+        return jsonify({"message": "Frontend not built or missing"}), 404
 
 @app.route('/api/scan', methods=['POST'])
 def scan_endpoint():
@@ -22,8 +27,6 @@ def scan_endpoint():
         return jsonify({'error': 'Target URL is required'}), 400
     
     scanner = Scanner()
-    
-    # Run basic scans
     scanner.run_all_scans(
         target_url,
         sqli_params={'param_name': 'id'},
@@ -44,5 +47,6 @@ def health_check():
     return jsonify({'status': 'healthy', 'message': 'O-Hunter API is running'})
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    # خلي الـ port يقرأ من Railway أو ياخد 8080 محلي
+    port = int(os.environ.get("PORT", 8080))
+    app.run(debug=False, host='0.0.0.0', port=port)
