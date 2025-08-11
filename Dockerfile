@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     nodejs \
     npm \
+    && npm install -g pnpm \
     && rm -rf /var/lib/apt/lists/*
 
 # تثبيت باكدجات Python
@@ -19,7 +20,7 @@ COPY . .
 
 # ===== Build Frontend =====
 WORKDIR /app/gui/ohunter-ui
-RUN npm install && npm run build
+RUN pnpm install && pnpm run build
 
 # رجوع لمجلد الباك إند
 WORKDIR /app
