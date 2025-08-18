@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://o-hunter.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Allow all vulnerability scanner pages
+Allow: /xss
+Allow: /sql-injection
+Allow: /ssrf
+Allow: /rce
+Allow: /xxe
+Allow: /open-redirect
+Allow: /http-smuggling
+Allow: /directory-traversal
+Allow: /insecure-deserialization
+Allow: /csrf
+Allow: /security-headers
+Allow: /ssl-tls
+Allow: /cloud-misconfigurations
+
+# Block admin or sensitive areas (if any)
+# Disallow: /admin
+# Disallow: /api/internal
+
