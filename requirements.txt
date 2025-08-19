@@ -7,4 +7,3 @@ python-masscan
 python-Wappalyzer
 aiohttp
 gunicorn
-
