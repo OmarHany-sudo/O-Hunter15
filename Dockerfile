@@ -13,7 +13,9 @@ RUN apt-get update && apt-get install -y \
 
 # تثبيت باكدجات Python
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt gunicorn
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt gunicorn
+
 
 # نسخ باقي ملفات المشروع
 COPY . .
