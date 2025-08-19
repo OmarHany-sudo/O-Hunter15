@@ -33,4 +33,5 @@ ENV PORT=8080
 EXPOSE $PORT
 
 # تشغيل السيرفر بـ Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:${PORT}", "core.app:app"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} core.app:app"]
+
