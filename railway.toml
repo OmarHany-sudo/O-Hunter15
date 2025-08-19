@@ -2,12 +2,11 @@
 builder = "dockerfile"
 
 [deploy]
-healthcheckPath = "/"
-healthcheckTimeout = 300
+healthcheckPath = "/api/health"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
+healthcheckTimeout = 300
 
 [env]
 PORT = "8080"
 PYTHONPATH = "/app"
-
