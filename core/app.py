@@ -246,6 +246,6 @@ def not_found(error):
 
 if __name__ == '__main__':
     # استخدم متغير البيئة PORT الذي يوفره Railway، أو 5000 كافتراضي للتطوير المحلي
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 8080))
     # في بيئة الإنتاج على Railway، يجب أن يكون debug=False
     app.run(host=\'0.0.0.0\', port=port, debug=False)
