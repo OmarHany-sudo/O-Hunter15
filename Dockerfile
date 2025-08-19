@@ -7,13 +7,17 @@ RUN apt-get update && apt-get install -y \
     curl \
     nodejs \
     npm \
+    gcc \
+    libffi-dev \
+    make \
     && npm install -g pnpm \
     && rm -rf /var/lib/apt/lists/*
 
 # نسخ requirements.txt وتثبيت باكدجات Python
-COPY requirements.txt .
 RUN pip install --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
+    && pip install --no-cache-dir -r requirements.txt \
+    && pip install gunicorn
+
 
 # نسخ باقي ملفات المشروع
 COPY . .
