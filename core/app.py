@@ -33,6 +33,22 @@ def serve_static_files(path):
         # If file not found, serve index.html for React Router
         return send_from_directory(app.static_folder, 'index.html')
 
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """Health check endpoint for Railway"""
+    return jsonify({
+        'status': 'healthy', 
+        'message': 'O-Hunter API is running',
+        'version': '2.0.0',
+        'frontend_available': os.path.exists(os.path.join(app.static_folder, 'index.html')),
+        'api_integrations': {
+            'owasp_zap': 'available',
+            'haveibeenpwned': 'available',
+            'censys': 'configurable'
+        }
+    })
+
+
 @app.route('/api/scan', methods=['POST'])
 def scan_endpoint():
     """Main scanning endpoint with API integrations"""
