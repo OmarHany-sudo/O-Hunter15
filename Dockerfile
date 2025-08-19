@@ -11,10 +11,10 @@ RUN apt-get update && apt-get install -y \
     && npm install -g pnpm \
     && rm -rf /var/lib/apt/lists/*
 
-# تثبيت باكدجات Python
 COPY requirements.txt .
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt gunicorn
+
 
 
 # نسخ باقي ملفات المشروع
