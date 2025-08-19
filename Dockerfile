@@ -30,4 +30,4 @@ ENV PORT=8080
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} core.app:app"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} core.app:app --log-level debug"]
