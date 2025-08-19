@@ -15,14 +15,16 @@ app = Flask(__name__, static_folder=static_path, static_url_path='')
 CORS(app)
 
 @app.route('/')
-def root():
-    """Default root for Railway health check"""
-    return jsonify({
-        "status": "healthy",
-        "message": "Root OK - Railway healthcheck passed",
-        "version": "2.0.0"
-    })
-
+def serve_frontend():
+    """Serve the React frontend"""
+    try:
+        return send_from_directory(app.static_folder, 'index.html')
+    except Exception as e:
+        return jsonify({
+            "error": "Frontend not available", 
+            "message": "Please ensure the frontend is built properly",
+            "details": str(e)
+        }), 404
 
 @app.route('/<path:path>')
 def serve_static_files(path):
@@ -32,22 +34,6 @@ def serve_static_files(path):
     except Exception:
         # If file not found, serve index.html for React Router
         return send_from_directory(app.static_folder, 'index.html')
-
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    """Health check endpoint for Railway"""
-    return jsonify({
-        'status': 'healthy', 
-        'message': 'O-Hunter API is running',
-        'version': '2.0.0',
-        'frontend_available': os.path.exists(os.path.join(app.static_folder, 'index.html')),
-        'api_integrations': {
-            'owasp_zap': 'available',
-            'haveibeenpwned': 'available',
-            'censys': 'configurable'
-        }
-    })
-
 
 @app.route('/api/scan', methods=['POST'])
 def scan_endpoint():
@@ -252,16 +238,7 @@ def not_found(error):
     return serve_frontend()
 
 if __name__ == '__main__':
-    # قراءة البورت من متغير البيئة (Railway يستخدم PORT)
-    port = int(os.environ.get("PORT", 8080))
-    debug_mode = os.environ.get("FLASK_ENV") == "development"
-    
-    print(f"Starting O-Hunter v2.0 on port {port}")
-    print(f"Static folder: {app.static_folder}")
-    print(f"Frontend available: {os.path.exists(os.path.join(app.static_folder, 'index.html'))}")
-    print("API Integrations:")
-    print(f"  - OWASP ZAP: Available")
-    print(f"  - HaveIBeenPwned: Available")
-    print(f"  - Censys: {'Configured' if os.environ.get('CENSYS_API_ID') else 'Not configured'}")
-    
-    app.run(debug=debug_mode, host='0.0.0.0', port=port)
+    # استخدم متغير البيئة PORT الذي يوفره Railway، أو 5000 كافتراضي للتطوير المحلي
+    port = int(os.environ.get("PORT", 5000))
+    # في بيئة الإنتاج على Railway، يجب أن يكون debug=False
+    app.run(host=\'0.0.0.0\', port=port, debug=False)
