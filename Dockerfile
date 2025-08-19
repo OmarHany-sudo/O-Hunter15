@@ -7,31 +7,30 @@ RUN apt-get update && apt-get install -y \
     curl \
     nodejs \
     npm \
-    gcc \
-    libffi-dev \
-    make \
     && npm install -g pnpm \
     && rm -rf /var/lib/apt/lists/*
 
-# نسخ requirements.txt وتثبيت باكدجات Python
+# requirements + gunicorn
+COPY requirements.txt .
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install gunicorn
 
-
-# نسخ باقي ملفات المشروع
+# نسخ باقي الملفات
 COPY . .
 
-# ===== Build Frontend =====
+# Build Frontend
 WORKDIR /app/gui/ohunter-ui
 RUN pnpm install && pnpm run build
 
-# رجوع لمجلد الباك إند
+# رجوع للباك إند
 WORKDIR /app
 
+# Variables
 ENV PYTHONPATH=/app
 ENV PORT=8080
 
 EXPOSE $PORT
 
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} core.app:app --log-level debug"]
+# Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "core.app:app"]
