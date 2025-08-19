@@ -14,6 +14,12 @@ static_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gu
 app = Flask(__name__, static_folder=static_path, static_url_path='')
 CORS(app)
 
+# Healthcheck
+@app.route("/api/health", methods=["GET"])
+def health():
+    return {"status": "ok"}, 200
+
+# Serve frontend
 @app.route('/')
 def serve_frontend():
     """Serve the React frontend"""
@@ -25,6 +31,7 @@ def serve_frontend():
             "message": "Please ensure the frontend is built properly",
             "details": str(e)
         }), 404
+
 
 @app.route('/<path:path>')
 def serve_static_files(path):
