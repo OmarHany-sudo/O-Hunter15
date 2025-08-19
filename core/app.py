@@ -1,30 +1,25 @@
-import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
-from scanner import Scanner
-from modules.owasp_zap_integration import OWASPZAPIntegration
-from modules.haveibeenpwned_integration import HaveIBeenPwnedIntegration
-from modules.censys_integration import CensysIntegration
 
-# تحديد مسار الـ static folder بشكل صحيح
-static_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gui', 'ohunter-ui', 'dist')
+# مسار الـ frontend (dist بتاع Vite)
+static_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '..', 'gui', 'ohunter-ui', 'dist'
+)
+
 app = Flask(__name__, static_folder=static_path, static_url_path='')
 CORS(app)
 
-# Healthcheck
+# Healthcheck عشان Railway
 @app.route("/api/health", methods=["GET"])
 def health():
-    return {"status": "ok"}, 200
+    return jsonify({"status": "ok"}), 200
 
-# Serve frontend
+# Serve React frontend
 @app.route('/')
 def serve_frontend():
-    """Serve the React frontend"""
-    try:
-        return send_from_directory(app.static_folder, 'index.html')
+    return send_from_directory(app.static_folder, 'index.html')
     except Exception as e:
         return jsonify({
             "error": "Frontend not available", 
