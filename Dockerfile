@@ -1,6 +1,5 @@
 FROM python:3.11-slim
 
-# تحديد مجلد العمل
 WORKDIR /app
 
 # تثبيت المتطلبات الأساسية
@@ -26,12 +25,9 @@ RUN pnpm install && pnpm run build
 # رجوع لمجلد الباك إند
 WORKDIR /app
 
-# تعيين متغيرات البيئة
 ENV PYTHONPATH=/app
 ENV PORT=8080
 
-# فتح البورت
 EXPOSE $PORT
 
-# تشغيل Gunicorn (Production)
 CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} core.app:app"]
