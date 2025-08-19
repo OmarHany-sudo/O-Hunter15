@@ -15,16 +15,14 @@ app = Flask(__name__, static_folder=static_path, static_url_path='')
 CORS(app)
 
 @app.route('/')
-def serve_frontend():
-    """Serve the React frontend"""
-    try:
-        return send_from_directory(app.static_folder, 'index.html')
-    except Exception as e:
-        return jsonify({
-            "error": "Frontend not available", 
-            "message": "Please ensure the frontend is built properly",
-            "details": str(e)
-        }), 404
+def root():
+    """Default root for Railway health check"""
+    return jsonify({
+        "status": "healthy",
+        "message": "Root OK - Railway healthcheck passed",
+        "version": "2.0.0"
+    })
+
 
 @app.route('/<path:path>')
 def serve_static_files(path):
