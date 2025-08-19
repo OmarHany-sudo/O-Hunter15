@@ -32,6 +32,5 @@ ENV PORT=8080
 # فتح البورت
 EXPOSE $PORT
 
-# تشغيل السيرفر بـ Gunicorn
+# تشغيل Gunicorn (Production)
 CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} core.app:app"]
-
