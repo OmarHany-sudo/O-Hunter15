@@ -35,7 +35,10 @@ function MainApp() {
         options: scanOptions
       }
       
-      const response = await fetch('/api/scan', {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 
+                           (window.location.origin.includes("localhost") ? "http://localhost:5000" : "");
+
+      const response = await fetch(`${API_BASE_URL}/api/scan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
