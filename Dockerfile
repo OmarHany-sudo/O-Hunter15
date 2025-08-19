@@ -11,11 +11,10 @@ RUN apt-get update && apt-get install -y \
     && npm install -g pnpm \
     && rm -rf /var/lib/apt/lists/*
 
+# نسخ requirements.txt وتثبيت الباكدجات
 COPY requirements.txt .
 RUN pip install --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt gunicorn
-
-
+    && pip install --no-cache-dir -r requirements.txt
 
 # نسخ باقي ملفات المشروع
 COPY . .
@@ -35,4 +34,4 @@ ENV PORT=8080
 EXPOSE $PORT
 
 # تشغيل Gunicorn (Production)
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} core.app:app"]
+CMD ["sh", "-c", "gunicorn --workers 4 --bind 0.0.0.0:${PORT} core.app:app"]
