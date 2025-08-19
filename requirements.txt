@@ -7,6 +7,5 @@ python-masscan
 python-Wappalyzer
 asyncio
 aiohttp
-concurrent.futures
 gunicorn
 
